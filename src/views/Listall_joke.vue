@@ -1,6 +1,30 @@
 <template>
 <v-app>
-    <v-col v-for="(jokes,index) in $store.getters" :key="index" >
+    <v-row>
+    <v-col cols="2">
+        <v-text-field
+            v-model="firstname"
+            :counter="10"
+            label="First name"
+            required
+            @keyup="search"
+          ></v-text-field>
+        </v-col>
+
+        <v-col
+          cols="2"
+        >
+          <v-text-field
+            v-model="lastname"
+            :counter="10"
+            label="Last name"
+            @keyup="search"
+            required
+          ></v-text-field>
+          
+        </v-col>  
+        </v-row>
+    <v-col  v-for="(jokes,index) in $store.state.joke" :key="index" >
     <v-col  v-for="(jokelist,index) in jokes" :key="index">
 
       <v-card
@@ -11,7 +35,6 @@
     <v-list-item three-line>
       <v-list-item-content>
         <div class="overline mb-4">
-          {{jokelist.categories[0]}}
           
         </div>
         <v-list-item-title class="headline mb-1">
@@ -28,18 +51,22 @@
 
     <v-card-actions>
     <v-btn
+    @click="add_myjoke(jokelist)"
       
       color="success"
     >
-      <v-icon left>
+      <v-icon left   
+    >
       mdi-arrow-down-bold-circle</v-icon>
       Save
+    
     </v-btn>      
     </v-card-actions>
     
   </v-card>
     </v-col>
     </v-col>
+
     </v-app>
 </template>
 <script>
@@ -48,20 +75,42 @@
 export default {
   data(){
     return{
-      jokelist_all:''
+      jokelist_all:'',
+      lastname:'',
+      firstname:''
 
     }
   },
   methods:{
     getall_joke(){
           this.$store.dispatch('joke/getall_joke')
+    },
+    add_myjoke(jokelist){
+      const id = this.$store.state.auth.user.id
+      const payload ={
+        id_user:id,
+        joke:jokelist.joke
+      }
+      this.$store.dispatch('joke/add_joke',payload)
+    },
+    search(){
+      {
+        
+        const account ={
+          firstName:this.firstname,
+          lastName:this.lastname
+        }
+              this.$store.dispatch('joke/search',account)
+
+      }
+
     }
   },
-    
-  
+
 
   created(){
     this.getall_joke()
+
     console.log(this.$store.getters)
 
   },

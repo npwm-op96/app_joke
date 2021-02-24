@@ -1,8 +1,6 @@
 <template>
     <v-app>
-   <v-col>
-   <v-btn color="success" @click="add_joke">+</v-btn>
-       <v-col  v-for="(jokes,index) in joke.joke" :key="index">
+   <v-col v-for="(myjokes,index) in this.$store.state.joke.myjoke" :key="index">
 
       <v-card
     class="mx-auto"
@@ -12,10 +10,11 @@
     <v-list-item three-line>
       <v-list-item-content>
         <div class="overline mb-4">
+        {{myjokes.id}}
         </div>
         <v-list-item-title class="headline mb-1">
         </v-list-item-title>
-        <v-list-item-subtitle>{{jokes.joke}}</v-list-item-subtitle>
+        <v-list-item-subtitle>{{myjokes.joke}}</v-list-item-subtitle>
       </v-list-item-content>
 
       <v-list-item-avatar
@@ -27,7 +26,7 @@
 
     <v-card-actions>
     <v-btn
-    @click="delete_fn(index)"
+    @click="delete_fn(myjokes)"
       color="error"
     >
       <v-icon left>
@@ -37,8 +36,8 @@
       Delete
     </v-btn>
          <v-btn
-    v-if="jokes.like"
-    @click="jokes.like=false"      
+    v-if="!myjokes.status"
+    @click="chang_status(myjokes)"      
       color="primary"
     >
       <v-icon left>
@@ -46,8 +45,8 @@
       Like
     </v-btn>   
     <v-btn
-    v-if="!jokes.like"
-      @click="jokes.like=true"
+    v-if="myjokes.status"
+        @click="chang_status(myjokes)"      
       color="warning"
     >
       <v-icon left>
@@ -57,39 +56,58 @@
     </v-card-actions>
   </v-card>
   </v-col>
-  </v-col>
     </v-app>
 </template>
 <script>
 export default {
     data (){
     return{
-        joke:{
-            joke:[{"joke":1,like:true},{"joke":2,like:true},{"joke":3,like:true},{"joke":4,like:true}]
-        },
-        like:false
-
+        like:''
         }
-
     },
     methods:{
-        like_fn() {
-            // console.log('like')
-                    // this.like= true
+        getmyjoke(){
+          const id = this.$store.state.auth.user.id
+          this.$store.dispatch('joke/getmyjoke',id)
         },
-          unlike_fn() {
-            // console.log('like')
-                    // this.like= false
-        },
-        delete_fn(index){
-            this.joke.joke.splice(index, 1);
+        chang_status(myjokes) {
+          let status;
+          const id = this.$store.state.auth.user.id
+          if(myjokes.status==null || myjokes.status==false){
+            console.log('to like')
+            status= true
+            // this.like=true
+          
+          }
+          else if(myjokes.status==true){
+            console.log('Unlike')
+                        status = false
+                        // this.like=false            
+          }
+          const payload = {
+            id:myjokes.id,
+            id_user : id,
+            status: status
+          } 
+          console.log(id)
+          this.$store.dispatch('joke/chang_status',payload)
+
 
         },
-        add_joke(){
-            this.joke.joke.push({"joke4":4})
+        delete_fn(myjokes){
+          const id  = myjokes.id
+            this.$store.dispatch('joke/deletejoke',id)
+            // this.joke.splice(index, 1);
+        },
+ 
+    },
+     created(){
+       this.joke = this.$store.state.joke
 
-        }
-    }
+
+      
+    this.getmyjoke()
+  },
     
 }
 </script>
