@@ -1,7 +1,7 @@
 <template>
     <v-app>
-   <v-col v-for="(myjokes,index) in this.$store.state.joke.myjoke" :key="index">
-
+   <v-col v-for="(myjokes,index) in this.$store.getters['joke/myjoke']" :key="index">
+   <!-- {{myjokes}} -->
       <v-card
     class="mx-auto"
     max-width="80%"
@@ -65,6 +65,7 @@ export default {
         like:''
         }
     },
+    computed:{},
     methods:{
         getmyjoke(){
           const id = this.$store.state.auth.user.id
@@ -102,7 +103,9 @@ export default {
  
     },
      created(){
-       this.joke = this.$store.state.joke
+           console.log(this.$store.getters['joke/myjoke'].jokes)
+
+      //  this.joke = this.$store.state.joke
 
 
       

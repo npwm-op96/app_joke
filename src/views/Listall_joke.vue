@@ -2,6 +2,7 @@
 <v-app>
     <v-row>
     <v-col cols="2">
+    <!-- {{all_joke}} -->
         <v-text-field
             v-model="firstname"
             :counter="10"
@@ -24,8 +25,9 @@
           
         </v-col>  
         </v-row>
-    <v-col  v-for="(jokes,index) in $store.state.joke" :key="index" >
-    <v-col  v-for="(jokelist,index) in jokes" :key="index">
+    <v-col  v-for="(jokelist,index) in this.$store.getters['joke/jokes']" :key="index" >
+    <!-- {{jokes}} -->
+    <!-- <v-col  v-for="(jokelist,index) in jokes" :key="index"> -->
 
       <v-card
     class="mx-auto"
@@ -71,7 +73,6 @@
 </template>
 <script>
 // import HelloWorld from './components/HelloWorld';
-
 export default {
   data(){
     return{
@@ -80,6 +81,11 @@ export default {
       firstname:''
 
     }
+  },
+  computed:{
+    all_joke(){
+      return  this.$store.getters
+    },
   },
   methods:{
     getall_joke(){
@@ -111,7 +117,9 @@ export default {
   created(){
     this.getall_joke()
 
+
     console.log(this.$store.getters)
+    console.log(this.$store.getters['joke/jokes'])
 
   },
   mounted(){

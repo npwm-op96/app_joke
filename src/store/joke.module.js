@@ -8,7 +8,9 @@ export const joke = {
   actions: {
       async getall_joke({commit}){
           await JokeService.getall_joke()
-          .then(res=>commit("fetchjoke",{res})
+          .then(res=>
+            // state.joke.push(res),
+            commit("fetchjoke",{res})
               
           )
       },

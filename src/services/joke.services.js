@@ -20,8 +20,6 @@ class JokeService{
         const lastName = account.lastName
         return axios.post(API_random+'?firstName='+firstName+'&lastName='+lastName)
         // return axios.post('http://api.icndb.com/jokes/random?firstName=John&lastName=Doe')
-
-
         
     }
 
