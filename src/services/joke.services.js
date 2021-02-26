@@ -32,6 +32,7 @@ class JokeService{
         return axios.put(API_URL +'status/'+id, payload, { headers: authHeader() });
       }
     deletejoke(id) {
+      console.log(id)
         return axios.delete(API_URL +'delete/'+id, { headers: authHeader() });
       }
 }

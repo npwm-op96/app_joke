@@ -26,7 +26,7 @@
 
     <v-card-actions>
     <v-btn
-    @click="delete_fn(myjokes)"
+    @click="delete_fn(myjokes,index)"
       color="error"
     >
       <v-icon left>
@@ -76,13 +76,15 @@ export default {
           const id = this.$store.state.auth.user.id
           if(myjokes.status==null || myjokes.status==false){
             console.log('to like')
-            status= true
+            myjokes.status= true
+            status =true
             // this.like=true
           
           }
           else if(myjokes.status==true){
             console.log('Unlike')
-                        status = false
+            myjokes.status = false
+            status =false
                         // this.like=false            
           }
           const payload = {
@@ -95,20 +97,14 @@ export default {
 
 
         },
-        delete_fn(myjokes){
+        delete_fn(myjokes,index){
           const id  = myjokes.id
-            this.$store.dispatch('joke/deletejoke',id)
+            this.$store.dispatch('joke/deletejoke',{id,index})
             // this.joke.splice(index, 1);
         },
  
     },
-     created(){
-           console.log(this.$store.getters['joke/myjoke'].jokes)
-
-      //  this.joke = this.$store.state.joke
-
-
-      
+     mounted(){
     this.getmyjoke()
   },
     

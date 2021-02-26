@@ -16,19 +16,22 @@ export const joke = {
       },
       async search({commit},account){
         await JokeService.search(account)
-        .then(res=>commit("fetchjoke",{res})
+        .then(res=>
+          commit("searchjoke",{res}),
+          // console.log(res.data)
+        
             
         )
     },
       async add_joke({commit},payload){
         await JokeService.add_joke(payload)
-        .then(res=>commit("add_joke",{res})
+        .then(res=>commit("add_joke",{res},{payload})
             
         )
     },
     async chang_status({commit},payload){
       await JokeService.chang_status(payload)
-      .then(res=>commit('chang_status',{res})
+      commit('chang_status',{payload}
     )
   },
   async getmyjoke({commit},id){
@@ -36,32 +39,41 @@ export const joke = {
     .then(res=>commit('myjoke',{res})
   )
 },
-async deletejoke({commit},id){
-  await JokeService.deletejoke(id)
-  .then(res=>commit('myjoke',{res})
-)
+ deletejoke({commit},{id},index){
+   JokeService.deletejoke(id)
+  commit('deletejoke',{index})
+
 }
   },
 
   mutations: {
-      chang_status(state,{res})
+      chang_status(state,{payload})
       {
-        state.myjoke= res.data
+        state.myjoke[payload.index]= {status:payload.status}
+      },
+      deletejoke(state,{index})
+      {
+        console.log(index)
+         state.myjoke.splice(index,1)
+        //  console.log(state.myjoke)
       },
       fetchjoke(state,{res}){
           state.joke =res.data.value
       },
       add_joke(state,{res}){
-        state.joke.listadd =res.data
+        state.myjoke.push(res.data)
     },
       myjoke(state,{res}){
       state.myjoke =res.data
-  }
-
+    },
+    searchjoke(state,{res}){
+      state.joke=[res.data.value]
+    }
   },
   getters: {
       jokes:state =>state.joke,
-      myjoke:state=>state.myjoke
+      myjoke:state=>state.myjoke,
+      searchjoke:state=>state.searchjoke
   }
 };
 

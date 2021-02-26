@@ -1,7 +1,8 @@
 <template>
 <v-app>
+  <v-col>
     <v-row>
-    <v-col cols="2">
+    <v-col offset="1" xs="6">
     <!-- {{all_joke}} -->
         <v-text-field
             v-model="firstname"
@@ -12,9 +13,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col
-          cols="2"
-        >
+      <v-col  xs="6">
           <v-text-field
             v-model="lastname"
             :counter="10"
@@ -25,10 +24,8 @@
           
         </v-col>  
         </v-row>
+      </v-col>
     <v-col  v-for="(jokelist,index) in this.$store.getters['joke/jokes']" :key="index" >
-    <!-- {{jokes}} -->
-    <!-- <v-col  v-for="(jokelist,index) in jokes" :key="index"> -->
-
       <v-card
     class="mx-auto"
     max-width="80%"
@@ -67,7 +64,6 @@
     
   </v-card>
     </v-col>
-    </v-col>
 
     </v-app>
 </template>
@@ -79,7 +75,6 @@ export default {
       jokelist_all:'',
       lastname:'',
       firstname:''
-
     }
   },
   computed:{
@@ -101,13 +96,18 @@ export default {
     },
     search(){
       {
+        if(this.firstname=='' && this.lastname=='')
+        {
+          this.getall_joke()
+        }
+        else{
         
         const account ={
           firstName:this.firstname,
           lastName:this.lastname
         }
               this.$store.dispatch('joke/search',account)
-
+      }
       }
 
     }
@@ -116,8 +116,6 @@ export default {
 
   created(){
     this.getall_joke()
-
-
     console.log(this.$store.getters)
     console.log(this.$store.getters['joke/jokes'])
 
