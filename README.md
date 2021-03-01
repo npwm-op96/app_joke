@@ -1,4 +1,11 @@
 # joker_app
+joke list
+<p align="center"><img src="https://imgur.com/JhPhnml.jpg" width="80%" alt="" /></p>
+myjok
+<p align="center"><img src="https://imgur.com/nekE7OL.jpg" width="80%" alt="" /></p>
+
+
+
 
 ## Project setup
 ```
